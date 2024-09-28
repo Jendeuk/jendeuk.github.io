@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://bulky-expectations-340118.framer.app/sitemap.xml
