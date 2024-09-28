@@ -8,7 +8,7 @@ rm -rf "$FOLDER"
 curl -s "$URL/sitemap.xml" | grep https | grep -oP '(?<=<loc>).*?(?=</loc>)' | while read -r url; do wget -m -p -E -k "$url"; done
 
 echo "[+] Hide framer badge"
-find . -type f -exec sed -i 's/id="__framer-badge-container" style="display: none;">/id="__framer-badge-container" style="display: none;">/g' {} \;
+find "$FOLDER" -type f -exec sed -i 's/id="__framer-badge-container" style="display: none;">/id="__framer-badge-container" style="display: none;">/g' {} \;
 
 echo "[+] Setup github config"
 echo "jenny.ngoluong.no" > CNAME
