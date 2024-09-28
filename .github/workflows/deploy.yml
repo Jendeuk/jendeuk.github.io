@@ -1,0 +1,43 @@
+name: Deploy to gh-pages
+
+# This allows manual triggering of the workflow from the GitHub Actions tab
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install wget and sed
+        run: sudo apt-get install -y wget sed
+
+      - name: Run deploy.sh script
+        run: ./deploy.sh
+
+      - name: Prepare for gh-pages deployment
+        run: |
+          # Remove existing files in the root directory
+          rm -rf deploy.sh .github
+
+          # Move all contents from the folder to the root
+          mv bulky-expectations-340118.framer.app/* .
+
+          # Remove the now-empty folder
+          rmdir bulky-expectations-340118.framer.app || true
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add changes and push to gh-pages branch
+        run: |
+          git add .
+          git commit -m "Deploy to gh-pages branch"
+          
+          # Force push to gh-pages branch
+          git push -f origin HEAD:gh-pages
